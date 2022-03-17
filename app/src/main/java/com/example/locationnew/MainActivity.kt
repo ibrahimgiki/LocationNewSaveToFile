@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -19,14 +20,16 @@ import androidx.core.app.ServiceCompat
 import androidx.core.app.ServiceCompat.stopForeground
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.startForegroundService
+import com.example.locationnew.LocationService.CompanionObject.locationArrayList
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
     var mLocationService: LocationService = LocationService()
     lateinit var mServiceIntent: Intent
 
-    lateinit var startServiceBtn: TextView
-    lateinit var stopServiceBtn: TextView
+    lateinit var startServiceBtn: Button
+    lateinit var stopServiceBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,6 +112,7 @@ class MainActivity : AppCompatActivity() {
         if (Util.isMyServiceRunning(mLocationService.javaClass, this)) {
             stopService(mServiceIntent)
             Toast.makeText(this, "Service stopped!!", Toast.LENGTH_SHORT).show()
+            saveDataToFile()
         } else {
             Toast.makeText(this, "Service is already stopped!!", Toast.LENGTH_SHORT).show()
         }
@@ -169,4 +173,14 @@ class MainActivity : AppCompatActivity() {
         private const val MY_FINE_LOCATION_REQUEST = 99
         private const val MY_BACKGROUND_LOCATION_REQUEST = 100
     }
+
+    private fun saveDataToFile(){
+        val path = this.getExternalFilesDir(null)
+        val folder = File(path, "trickyworld")
+        folder.mkdirs()
+        val file = File(folder, "location.txt")
+        file.appendText("${LocationService.locationArrayList.toString()}")
+        locationArrayList.clear()
+    }
+
 }

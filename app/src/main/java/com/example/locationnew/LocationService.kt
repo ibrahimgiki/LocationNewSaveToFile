@@ -16,9 +16,20 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.google.android.gms.location.*
 import com.google.android.gms.location.LocationRequest.*
+import com.google.android.gms.maps.model.LatLng
+import java.io.File
 import java.util.*
 
 class LocationService : Service() {
+
+   // private lateinit var locationArrayList: ArrayList<LatLng>
+
+    companion object CompanionObject {
+        val locationArrayList = ArrayList<LatLng>()
+    }
+
+
+
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
@@ -34,10 +45,14 @@ class LocationService : Service() {
             val locationList = locationResult.locations
             if (locationList.isNotEmpty()) {
                 val location = locationList.last()
-                Toast.makeText(this@LocationService, "Latitude: " + location.latitude.toString() + '\n' +
-                        "Longitude: "+ location.longitude, Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@LocationService, "Latitude: " + location.latitude.toString() + '\n' +
+                            "Longitude: " + location.longitude, Toast.LENGTH_LONG
+                ).show()
                 Log.d("Location d", location.latitude.toString())
                 Log.i("Location i", location.latitude.toString())
+
+                locationArrayList!!.add(LatLng(location.latitude, location.longitude))
             }
         }
     }
@@ -49,17 +64,27 @@ class LocationService : Service() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) createNotificationChanel() else startForeground(1, Notification())
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O) createNotificationChanel() else startForeground(
+            1,
+            Notification()
+        )
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
                 != PackageManager.PERMISSION_GRANTED) {
 
             Toast.makeText(applicationContext, "Permission required", Toast.LENGTH_LONG).show()
             return
         }else{
-            fusedLocationClient?.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+            fusedLocationClient?.requestLocationUpdates(
+                locationRequest,
+                locationCallback,
+                Looper.getMainLooper()
+            )
         }
     }
 
@@ -67,7 +92,11 @@ class LocationService : Service() {
     private fun createNotificationChanel() {
         val notificationChannelId = "Location channel id"
         val channelName = "Background Service"
-        val chan = NotificationChannel(notificationChannelId, channelName, NotificationManager.IMPORTANCE_NONE)
+        val chan = NotificationChannel(
+            notificationChannelId,
+            channelName,
+            NotificationManager.IMPORTANCE_NONE
+        )
         chan.lightColor = Color.BLUE
         chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
         val manager = (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
@@ -96,5 +125,6 @@ class LocationService : Service() {
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
+
 
 }
