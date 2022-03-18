@@ -181,7 +181,7 @@ class MainActivity : AppCompatActivity() {
         val folder = File(path, "trickyworld")
         folder.mkdirs()
         val file = File(folder, "location.txt")
-        file.appendText("${LocationService.locationArrayList.toString()}")
+        if ( ! locationArrayList.isEmpty()) file.appendText("${LocationService.locationArrayList.toString()}")
         locationArrayList.clear()
     }
 
