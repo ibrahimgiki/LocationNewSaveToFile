@@ -25,6 +25,8 @@ import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
+    //This is the first change
+
     var mLocationService: LocationService = LocationService()
     lateinit var mServiceIntent: Intent
 
