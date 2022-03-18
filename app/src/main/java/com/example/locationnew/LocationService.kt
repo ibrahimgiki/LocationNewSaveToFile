@@ -22,14 +22,9 @@ import java.util.*
 
 class LocationService : Service() {
 
-   // private lateinit var locationArrayList: ArrayList<LatLng>
-
     companion object CompanionObject {
         val locationArrayList = ArrayList<LatLng>()
     }
-
-
-
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 

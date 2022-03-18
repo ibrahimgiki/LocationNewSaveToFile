@@ -19,7 +19,10 @@
           android:layout_gravity="bottom"
           android:textSize="24sp"
           android:textColor="@color/purple_200"
-          android:text="Get user location updates, in the background, repeatedly after some specific interval even not using the app"
+          android:text="Get user location updates, in the background, repeatedly after
+           some specific interval even not using the app. When service
+           is stopped location data is save in a file. File can be found at:
+           Android -> data -> com.example.locationnew.files -> files"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"/>
 
