@@ -1,6 +1,7 @@
 package com.example.locationnew
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -53,6 +54,7 @@ class LocationService : Service() {
     }
 
     /*******************/
+
 
     override fun onCreate() {
         super.onCreate()
